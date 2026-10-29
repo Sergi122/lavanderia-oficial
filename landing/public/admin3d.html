@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ciudad 3D · Panel</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#eef1fb;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  #c{position:absolute;inset:0}
+  canvas{display:block;cursor:grab;touch-action:none}
+  .capa-etiquetas{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .etiqueta{position:absolute;left:0;top:0;white-space:nowrap;font-size:12px;line-height:1.25;color:#0a1c33;
+    background:rgba(255,255,255,.94);border-radius:10px;padding:5px 9px;box-shadow:0 4px 14px rgba(40,60,120,.16);
+    border:1px solid rgba(47,111,224,.12);will-change:transform;transition:opacity .2s}
+  .etiqueta b{color:#2f6fe0}
+  .etiqueta span{color:#5b6787;font-size:11px}
+  .chip-moto{background:#2f6fe0;color:#fff;border:0}.chip-moto b{color:#fff}
+  .chip-obra{background:#fff7e6;border-color:#ffc23d;font-weight:600}
+  .chip-cliente{background:#ecfdf3;border-color:#58e08a}
+  .chip-empleado{font-weight:600}
+  #carga{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#2f6fe0;font-weight:700;background:#eef1fb;transition:opacity .6s}
+  #carga .barra{width:220px;height:8px;border-radius:8px;background:#dfe5f3;overflow:hidden}
+  #carga .barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2f6fe0,#5aa0ff);transition:width .2s}
+  @media (prefers-reduced-motion: reduce){.etiqueta{transition:none}}
+</style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head><body><div id="c"></div>
+<div id="carga"><div>Construyendo la ciudad…</div><div class="barra"><i></i></div></div>
+<script type="module">
+import { iniciar } from './ciudad/admin3d.js';
+// Barra de carga local; los avisos a Flutter los envía admin3d.js.
+const barra = document.querySelector('#carga i');
+const ok = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
+const avisar = (o) => { const s = JSON.stringify(o); if (window.FlutterBridge) window.FlutterBridge.postMessage(s); else if (parent !== window) parent.postMessage(s, '*'); };
+window.__recibir = (s) => window.dispatchEvent(new MessageEvent('message', { data: s }));
+window.__obs = (m) => { if (m.tipo === 'progreso') barra.style.width = (m.valor * 100).toFixed(0) + '%'; };
+if (!ok) avisar({ tipo: 'sinwebgl' });
+else iniciar(document.getElementById('c'), { demo: new URLSearchParams(location.search).has('demo') }).then(() => {
+  const c = document.getElementById('carga'); c.style.opacity = 0; setTimeout(() => c.remove(), 700);
+}).catch((e) => { console.error(e); avisar({ tipo: 'sinwebgl', error: String(e) }); });
+</script></body></html>

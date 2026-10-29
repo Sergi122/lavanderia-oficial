@@ -1,0 +1,37 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "pedidos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "clienteId", "order": "ASCENDING"},
+        {"fieldPath": "creadoEn", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "pedidos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "lavanderiaId", "order": "ASCENDING"},
+        {"fieldPath": "creadoEn", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "convocatorias",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "lavanderiaId", "order": "ASCENDING"},
+        {"fieldPath": "creadoEn", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "convocatorias",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "abierta", "order": "ASCENDING"},
+        {"fieldPath": "creadoEn", "order": "DESCENDING"}
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

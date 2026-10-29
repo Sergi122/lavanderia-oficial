@@ -1,0 +1,20 @@
+# repo propio aparte
+verificacion-backend/
+# binarios y secretos
+*.apk
+*.aab
+*.jks
+*.keystore
+key.properties
+*adminsdk*.json
+serviceAccount*.json
+.env
+.env.*
+node_modules/
+build/
+.dart_tool/
+
+# pesados o generados (fuera de git)
+ia-prendas/
+assets3d-src/
+graphify-out/

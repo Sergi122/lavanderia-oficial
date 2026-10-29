@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610182436260",
+    "project_id": "laundry-app-asustadores",
+    "storage_bucket": "laundry-app-asustadores.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610182436260:android:900b2632b995fb394a9d31",
+        "android_client_info": {
+          "package_name": "com.losasustadores.laundry_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu2CD9rS3btNiK_NEUfsbptTdsVUJic3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

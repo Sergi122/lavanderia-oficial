@@ -1,0 +1,15 @@
+abrigo
+camisa
+chompa
+cortina
+edredon
+falda
+jeans
+pantalon
+polera
+ropa_cama
+short
+toalla
+traje
+vestido
+zapatillas

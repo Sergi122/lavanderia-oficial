@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "610182436260",
+    "project_id": "laundry-app-asustadores",
+    "storage_bucket": "laundry-app-asustadores.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610182436260:android:900b2632b995fb394a9d31",
+        "android_client_info": {
+          "package_name": "com.losasustadores.laundry_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610182436260-2b5sls94g9qgp0nmhqhh8mio9dp5d31i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.losasustadores.laundry_app",
+            "certificate_hash": "53aa9e8273daa7739a15dddcf9ee819d2e0e1e1e"
+          }
+        },
+        {
+          "client_id": "610182436260-3u7o3bnrkkmgaogk8i0ir4i65lqkafn1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.losasustadores.laundry_app",
+            "certificate_hash": "41d512e9ff94551c320e8d7eae1df266a7808a4c"
+          }
+        },
+        {
+          "client_id": "610182436260-tv25pi4rrg2lcc9rlk2ked4b3rd1vpk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu2CD9rS3btNiK_NEUfsbptTdsVUJic3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610182436260-tv25pi4rrg2lcc9rlk2ked4b3rd1vpk5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

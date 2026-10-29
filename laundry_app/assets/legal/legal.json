@@ -1,0 +1,164 @@
+{
+  "version": "2026-10-26",
+  "actualizado": "26 de octubre de 2026",
+  "servicio": "Unión de Lavanderías La Paz",
+  "documentos": {
+    "privacidad": {
+      "titulo": "Política de privacidad",
+      "intro": "Esta política explica qué datos personales recoge la app «Unión de Lavanderías La Paz» (app Android y web), para qué los usa, con quién los comparte y qué puedes hacer con ellos. La app está en fase de piloto: la opera el equipo «Los Asustadores» (Escuela Militar de Ingeniería, La Paz, Bolivia) junto con las lavanderías que participan del piloto.",
+      "secciones": [
+        {
+          "titulo": "1. Quién es responsable",
+          "parrafos": [
+            "El equipo «Los Asustadores» es responsable de la plataforma (la app, la base de datos y el servidor de verificación). Cada lavandería es responsable de los datos que usa para atender tus pedidos (por ejemplo, tu nombre y tu dirección de recojo).",
+            "Para cualquier consulta sobre tus datos escríbenos desde la app, en «Asistencia» (cliente) o «Contáctanos» (lavandería)."
+          ]
+        },
+        {
+          "titulo": "2. Qué datos recogemos",
+          "items": [
+            "Cuenta: nombre, nombres y apellidos, correo electrónico, celular (opcional) y, si entras con Google, el nombre y correo de tu cuenta de Google. Tu contraseña la gestiona Firebase Authentication; nosotros nunca la vemos.",
+            "Ubicación: el punto de recojo que marcas en el mapa (tu casa) y, cuando pides un recojo, tu ubicación GPS en ese momento. Si eres repartidor, tu ubicación se comparte cada 15 segundos aproximadamente solo mientras tienes un encargo en curso y la app abierta.",
+            "Pedidos: prendas, cantidades, precios, estado del pedido, fotos de las prendas que registra la lavandería, foto de comprobante de entrega y tus calificaciones y comentarios.",
+            "Verificación de identidad (solo si te postulas como repartidor, empleado o dueño de lavandería): fotos del carnet de identidad (anverso y reverso), número de CI, selfies de frente y de perfil, foto de la tarjeta de propiedad y placa de la moto (repartidores), NIT y fotos del local (lavanderías), fecha de nacimiento, dirección y currículum (empleados).",
+            "Soporte: los mensajes que nos envías por «Asistencia» o «Contáctanos».",
+            "Datos técnicos mínimos que generan Firebase y Google al usar la app (por ejemplo, la fecha de tu último inicio de sesión)."
+          ]
+        },
+        {
+          "titulo": "3. Para qué los usamos",
+          "items": [
+            "Crear tu cuenta y verificar tu correo con un código de 6 dígitos.",
+            "Mostrarte lavanderías cercanas, calcular el costo de envío por distancia y coordinar el recojo y la entrega.",
+            "Permitir que la lavandería registre, lave y te devuelva tus prendas, y que te avisemos cuando cambia el estado de tu pedido.",
+            "Confirmar que los repartidores, empleados y dueños de lavandería son quienes dicen ser, comparando la selfie con la foto del carnet y comprobando que la selfie es de una persona real (prueba de vida). Esto protege a los clientes que entregan su ropa y abren su puerta.",
+            "Llevar las cuentas de cada lavandería (ingresos, gastos y planilla).",
+            "Atender reclamos, prevenir fraudes y suspender cuentas que hagan mal uso del servicio."
+          ]
+        },
+        {
+          "titulo": "4. Reconocimiento facial e inteligencia artificial",
+          "parrafos": [
+            "La comparación de la selfie con el carnet se hace en dos lugares: dentro de tu celular (modelo FaceNet) y en nuestro servidor de verificación. Del rostro se calcula un vector numérico solo para compararlo en ese momento; no se usa para identificarte en otros lugares, no se vende y no se comparte con terceros.",
+            "La clasificación del tipo de prenda (camisa, pantalón, etc.) se hace dentro del celular de la lavandería; las fotos de la ropa no se envían a ningún servicio de IA externo.",
+            "Si la verificación automática falla, una persona del equipo revisa tu solicitud a mano. Siempre puedes pedir que una persona revise una decisión automática."
+          ]
+        },
+        {
+          "titulo": "5. Con quién compartimos datos",
+          "items": [
+            "La lavandería que elijas: tu nombre, celular, dirección de recojo y los datos del pedido.",
+            "El repartidor que acepte tu pedido: tu nombre, dirección y ubicación de recojo mientras dura la entrega. Tú ves su ubicación en vivo durante el reparto.",
+            "Proveedores que hacen funcionar la app: Google Firebase (cuentas, base de datos y alojamiento web), Render (servidor de verificación), Brevo (envío del correo con tu código), OpenStreetMap/Nominatim (convertir coordenadas en una dirección) y OSRM (calcular rutas). Estos proveedores pueden almacenar datos fuera de Bolivia, principalmente en Estados Unidos.",
+            "Autoridades, solo si una ley u orden judicial boliviana lo exige."
+          ],
+          "parrafos": ["No vendemos tus datos ni los usamos para publicidad."]
+        },
+        {
+          "titulo": "6. Cuánto tiempo los guardamos",
+          "items": [
+            "Los datos de tu cuenta, mientras la cuenta exista.",
+            "El código de verificación de correo vence a los 10 minutos y solo guardamos un resumen cifrado (hash), nunca el código en sí.",
+            "Las fotos del carnet y las selfies se guardan en tu solicitud mientras exista tu cuenta, para poder revisar casos de fraude. Se borran cuando eliminas tu cuenta.",
+            "Al eliminar tu cuenta se borran tu perfil, tu ubicación de casa, tus solicitudes y sus fotos (carnet y selfies). Los pedidos ya entregados se conservan, con el nombre y la dirección que tenían, porque forman parte de la contabilidad de la lavandería."
+          ]
+        },
+        {
+          "titulo": "7. Tus derechos",
+          "parrafos": [
+            "Conforme a la Constitución Política del Estado (artículos 21 y 130) puedes pedir acceder a tus datos, corregirlos, eliminarlos u oponerte a su uso.",
+            "Puedes corregir tus datos desde tu perfil y eliminar tu cuenta desde Perfil → «Eliminar mi cuenta». Si eres dueño de una lavandería, pídelo por «Contáctanos» para no perder los pedidos en curso de tus clientes. Respondemos en un plazo máximo de 15 días hábiles."
+          ]
+        },
+        {
+          "titulo": "8. Seguridad",
+          "parrafos": [
+            "Toda la comunicación viaja cifrada (HTTPS). Las reglas de la base de datos impiden que un usuario lea los datos de otro: por ejemplo, el carnet y el NIT nunca son visibles para los clientes. Aun así, ningún sistema es 100 % seguro; si detectamos una filtración que te afecte, te avisaremos."
+          ]
+        },
+        {
+          "titulo": "9. Menores de edad",
+          "parrafos": [
+            "Para usar la app debes tener 18 años o más, o usarla con autorización de tu madre, padre o tutor. Para trabajar como repartidor o empleado, o para registrar una lavandería, debes tener 18 años cumplidos."
+          ]
+        },
+        {
+          "titulo": "10. Cambios",
+          "parrafos": [
+            "Si cambiamos esta política te lo mostraremos al abrir la app y te pediremos que la aceptes de nuevo antes de seguir usándola."
+          ]
+        }
+      ]
+    },
+    "terminos": {
+      "titulo": "Términos y condiciones",
+      "intro": "Estos términos regulan el uso de la app «Unión de Lavanderías La Paz» durante su fase de piloto. Al crear una cuenta aceptas estos términos y la Política de privacidad.",
+      "secciones": [
+        {
+          "titulo": "1. Qué es el servicio",
+          "parrafos": [
+            "La app conecta a clientes con lavanderías de La Paz y con repartidores independientes. La plataforma no lava ropa: el servicio de lavado lo presta cada lavandería, que fija sus propios precios y horarios, y el recojo y la entrega a domicilio los hace el repartidor que acepta el encargo.",
+            "Es un piloto: algunas funciones pueden cambiar, fallar o dejar de estar disponibles. Te pedimos que nos reportes cualquier problema desde «Asistencia»."
+          ]
+        },
+        {
+          "titulo": "2. Tu cuenta",
+          "items": [
+            "Debes dar datos reales y mantener tu contraseña en secreto. Eres responsable de lo que se haga con tu cuenta.",
+            "Una persona, una cuenta. No puedes hacerte pasar por otra persona ni usar el carnet de otro.",
+            "Podemos suspender cuentas que den datos falsos, intenten engañar a la verificación, maltraten a otros usuarios o abusen del servicio."
+          ]
+        },
+        {
+          "titulo": "3. Pedidos y precios",
+          "items": [
+            "El precio que ves al pedir es una estimación según la lista de precios de la lavandería. Al recibir y revisar tu ropa, la lavandería confirma el precio final antes de empezar a lavar; si cambia, lo verás en la app.",
+            "El costo de envío depende de la distancia (los primeros kilómetros pueden estar incluidos según la lavandería).",
+            "Durante el piloto los pagos se hacen directamente a la lavandería o al repartidor (efectivo u otro medio que acuerden). La app no cobra ni guarda datos de tarjetas.",
+            "Revisa tus prendas al recibirlas. Los reclamos por daños o pérdidas se hacen a la lavandería, idealmente dentro de las 48 horas siguientes a la entrega, usando «Asistencia» para que quede registro."
+          ]
+        },
+        {
+          "titulo": "4. Lavanderías",
+          "items": [
+            "La lavandería debe publicar información real (nombre, dirección, horarios, servicios y precios) y respetar el precio confirmado en la app.",
+            "Es responsable del cuidado de las prendas que recibe y de cumplir sus obligaciones tributarias y laborales.",
+            "Usa los datos de los clientes solo para atender sus pedidos."
+          ]
+        },
+        {
+          "titulo": "5. Repartidores",
+          "items": [
+            "El repartidor es independiente: decide qué encargos acepta. Debe contar con licencia y documentos de su vehículo al día.",
+            "Debe tratar la ropa con cuidado, seguir las etapas del encargo en la app y subir la foto de comprobante al entregar.",
+            "La dirección y la ubicación del cliente solo pueden usarse para ese encargo."
+          ]
+        },
+        {
+          "titulo": "6. Conducta",
+          "parrafos": [
+            "No se permite usar la app para actividades ilegales, publicar contenido ofensivo en comentarios o calificaciones, intentar acceder a datos de otros usuarios o interferir con el funcionamiento del sistema."
+          ]
+        },
+        {
+          "titulo": "7. Responsabilidad",
+          "parrafos": [
+            "Hacemos lo posible para que la app funcione bien, pero durante el piloto se ofrece «tal como está». La plataforma no responde por el lavado en sí ni por acuerdos entre clientes, lavanderías y repartidores, aunque te ayudaremos a mediar cualquier reclamo."
+          ]
+        },
+        {
+          "titulo": "8. Eliminar tu cuenta",
+          "parrafos": [
+            "Puedes eliminar tu cuenta cuando quieras desde Perfil → «Eliminar mi cuenta». Lo que pasa con tus datos se explica en la Política de privacidad."
+          ]
+        },
+        {
+          "titulo": "9. Ley aplicable",
+          "parrafos": [
+            "Estos términos se rigen por las leyes del Estado Plurinacional de Bolivia. Si los cambiamos, te pediremos que los aceptes de nuevo al abrir la app."
+          ]
+        }
+      ]
+    }
+  }
+}
