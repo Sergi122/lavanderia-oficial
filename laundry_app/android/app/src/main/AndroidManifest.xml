@@ -42,13 +42,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <!-- El paquete flutter_background_service ya declara este service en su propio
-             manifest; solo le agregamos el foregroundServiceType que exige Android 14+
-             y que el paquete todavía no declara (ver background_service.dart) -->
-        <service
-            android:name="id.flutter.flutter_background_service.BackgroundService"
-            android:foregroundServiceType="dataSync"
-            tools:node="merge" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

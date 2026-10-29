@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 /// Desplegado en Render — ver ~/lavanderia-app/verificacion-backend/README.md
 const urlBackendVerificacion =
-    'https://verificacion-backend-vze9.onrender.com/verificar';
+    'https://backend-primera-parte.onrender.com/verificar';
 
 class ResultadoVerificacionBackend {
   final bool aprobado;

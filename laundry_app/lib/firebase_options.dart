@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB_7UnTS29mL37J_oM28WnXVmWOqsRBZWo',
-    appId: '1:610182436260:web:a1d680c3696b8d6f4a9d31',
-    messagingSenderId: '610182436260',
-    projectId: 'laundry-app-asustadores',
-    authDomain: 'laundry-app-asustadores.firebaseapp.com',
-    storageBucket: 'laundry-app-asustadores.firebasestorage.app',
+    apiKey: 'AIzaSyAFPkIsN_8_7sbwnN_sPp4Xd10zlGyn_ns',
+    appId: '1:887704908639:web:a8e72df6355702259afcea',
+    messagingSenderId: '887704908639',
+    projectId: 'compostera-iot',
+    authDomain: 'compostera-iot.firebaseapp.com',
+    storageBucket: 'compostera-iot.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCu2CD9rS3btNiK_NEUfsbptTdsVUJic3o',
-    appId: '1:610182436260:android:900b2632b995fb394a9d31',
-    messagingSenderId: '610182436260',
-    projectId: 'laundry-app-asustadores',
-    storageBucket: 'laundry-app-asustadores.firebasestorage.app',
+    apiKey: 'AIzaSyD_v01-hECOh6LFYqnlXL3mqFW4ZcvCWOk',
+    appId: '1:887704908639:android:2efe6878b9524e2f9afcea',
+    messagingSenderId: '887704908639',
+    projectId: 'compostera-iot',
+    storageBucket: 'compostera-iot.firebasestorage.app',
   );
 }

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 /// Mismo servidor de Render que la verificación facial (ver verificacion-backend).
-const _base = 'https://verificacion-backend-vze9.onrender.com/codigo';
+const _base = 'https://backend-primera-parte.onrender.com/codigo';
 
 enum ResultadoEnvio { enviado, esperar, yaVerificado, noDisponible }
 

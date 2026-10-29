@@ -10,7 +10,6 @@ import '../../features/admin/presentation/editar_lavanderia_screen.dart';
 import '../../features/admin/presentation/finanzas_screen.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/presentation/cuenta_suspendida_screen.dart';
-import '../../features/auth/presentation/landing_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/splash_screen.dart';
 import '../../features/auth/presentation/verificar_correo_screen.dart';
@@ -20,20 +19,13 @@ import '../../features/client/presentation/completar_perfil_screen.dart';
 import '../../features/client/presentation/mapa_lavanderias_screen.dart';
 import '../../features/client/presentation/nuevo_pedido_screen.dart';
 import '../../features/client/presentation/realizar_pedido_screen.dart';
-import '../../features/client/presentation/ticket_asistencia_screen.dart';
-import '../../features/client/presentation/perfil_screen.dart';
 import '../../features/client/presentation/postular_empleado_screen.dart';
-import '../../features/client/presentation/postular_repartidor_screen.dart';
 import '../../features/client/presentation/trabajar_screen.dart';
 import '../verificacion/paso_identidad.dart';
+import '../widgets/proximamente.dart';
 import '../../features/employee/presentation/convocatorias_empleado_screen.dart';
-import '../../features/employee/presentation/employee_home_screen.dart';
-import '../../features/employee/presentation/perfil_empleado_screen.dart';
-import '../../features/repartidor/presentation/repartidor_home_screen.dart';
 import '../../features/shared/models/app_user.dart';
 import '../../features/shared/models/lavanderia.dart';
-import '../../features/superadmin/presentation/superadmin_home_screen.dart';
-import '../../features/verificador/presentation/verificador_home_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
@@ -48,7 +40,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/bienvenida',
-        builder: (context, state) => const LandingScreen(),
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
@@ -91,11 +83,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/cliente/asistencia',
-        builder: (context, state) => const TicketAsistenciaScreen(),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Asistencia',
+          sprint: 'el Sprint de Soporte',
+        ),
       ),
       GoRoute(
         path: '/cliente/perfil',
-        builder: (context, state) => const PerfilScreen(),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Mi perfil',
+          sprint: 'la segunda parte',
+        ),
       ),
       GoRoute(
         path: '/cliente/trabajar',
@@ -109,8 +107,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/cliente/postular-repartidor',
-        builder: (context, state) => PostularRepartidorScreen(
-          identidadInicial: state.extra as VerificacionIdentidad?,
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Postular como repartidor',
+          sprint: 'el Sprint de Reparto',
         ),
       ),
       GoRoute(
@@ -133,11 +132,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/empleado',
-        builder: (context, state) => const EmployeeHomeScreen(),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Panel del empleado',
+          sprint: 'la parte 2 de Gestión de pedidos',
+        ),
       ),
       GoRoute(
         path: '/empleado/perfil',
-        builder: (context, state) => const PerfilEmpleadoScreen(),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Mi perfil',
+          sprint: 'la segunda parte',
+        ),
       ),
       GoRoute(
         path: '/empleado/convocatorias',
@@ -149,20 +154,31 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/verificador',
-        builder: (context, state) => const VerificadorHomeScreen(),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Panel del verificador',
+          sprint: 'el módulo de Verificación',
+        ),
       ),
       GoRoute(
         path: '/repartidor',
-        builder: (context, state) => const RepartidorHomeScreen(),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Panel del repartidor',
+          sprint: 'el Sprint de Reparto',
+        ),
       ),
       GoRoute(
         path: '/repartidor/perfil',
-        builder: (context, state) =>
-            const PerfilEmpleadoScreen(soloDatosPersonales: true),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Mi perfil',
+          sprint: 'el Sprint de Reparto',
+        ),
       ),
       GoRoute(
         path: '/superadmin',
-        builder: (context, state) => const SuperadminHomeScreen(),
+        builder: (context, state) => const ProximamenteScreen(
+          titulo: 'Administración de la plataforma',
+          sprint: 'el módulo de Administración de plataforma',
+        ),
       ),
       GoRoute(
         path: '/legal/:tipo',

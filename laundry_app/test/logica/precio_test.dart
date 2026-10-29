@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laundry_app/features/shared/data/precio_pedido.dart';
-import 'package:laundry_app/features/shared/ia/clasificador_tipos.dart';
 import 'package:laundry_app/features/shared/models/lavanderia.dart';
 import 'package:laundry_app/features/shared/models/pedido.dart';
 
@@ -47,18 +46,5 @@ void main() {
       costoPrendasPara(_lav(), {'Vestidos': 2}, ModoCobroRegular.pieza, 0),
       2 * precioPorDefecto,
     );
-  });
-
-  test('la clase de la IA usa el nombre propio del servicio de la lavandería', () {
-    final lav = _lav(precios: {'Sábanas king': 15, 'Chompas / abrigos': 12});
-    expect(servicioParaClase(lav, 'ropa_cama'), 'Sábanas king');
-    expect(servicioParaClase(lav, 'abrigo'), 'Chompas / abrigos');
-    expect(servicioParaClase(lav, 'vestido'), 'Vestidos');
-    expect(servicioParaClase(null, 'jeans'), 'Jeans');
-  });
-
-  test('las predicciones salen ordenadas por confianza', () {
-    final r = ordenarPredicciones(['a', 'b', 'c'], [0.1, 0.7, 0.2]);
-    expect(r.map((p) => p.clase), ['b', 'c', 'a']);
   });
 }
