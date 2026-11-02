@@ -10,6 +10,7 @@ import '../../shared/models/pedido.dart';
 import '../../shared/widgets/dashboard_widgets.dart';
 import '../data/pedido_repository.dart';
 import 'mapa_lavanderias_screen.dart';
+import 'navegacion_cliente.dart';
 import 'seguimiento_pedido_screen.dart';
 
 class ClientHomeScreen extends ConsumerWidget {
@@ -35,6 +36,7 @@ class ClientHomeScreen extends ConsumerWidget {
     final perfilCompleto = appUser?.perfilCompleto ?? true;
 
     return Scaffold(
+      bottomNavigationBar: esCliente ? const NavegacionCliente(actual: 0) : null,
       body: Column(
         children: [
           PanelHeader(
@@ -45,6 +47,11 @@ class ClientHomeScreen extends ConsumerWidget {
                 ? () => context.push('/cliente/perfil')
                 : null,
             extras: [
+              IconButton(
+                onPressed: () => context.push('/cliente/notificaciones'),
+                icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
+                tooltip: 'Notificaciones',
+              ),
               if (panelPropio != null)
                 IconButton(
                   onPressed: () => context.go(panelPropio),
@@ -87,10 +94,7 @@ class ClientHomeScreen extends ConsumerWidget {
                         ? 'No tienes pedidos en curso'
                         : '$activos en curso · toca para seguirlos',
                     insignia: activos == 0 ? null : '$activos',
-                    onTap: () => Scrollable.ensureVisible(
-                      _clavePedidos.currentContext!,
-                      duration: const Duration(milliseconds: 400),
-                    ),
+                    onTap: () => context.push('/cliente/pedidos'),
                   ),
                   if (esCliente)
                     _Opcion(
