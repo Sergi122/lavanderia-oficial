@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/horario_atencion.dart';
-import '../../shared/models/lavanderia.dart';
+import '../../sesion/auth_repository.dart';
+import '../modelos/horario_atencion.dart';
+import '../modelos/lavanderia.dart';
 
 /// Solo las lavanderías activas (el superadmin puede desactivar una sin
 /// borrarla) se ofrecen a los clientes en el mapa y en la landing.

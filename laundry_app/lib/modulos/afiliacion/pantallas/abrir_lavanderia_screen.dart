@@ -11,8 +11,8 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/verificacion/paso_identidad.dart';
-import '../../shared/models/tipos_prenda.dart';
-import '../data/apertura_lavanderia_repository.dart';
+import '../../../core/contrato/modelos/tipos_prenda.dart';
+import '../../../core/contrato/datos/apertura_lavanderia_repository.dart';
 
 const _catalogoServicios = ['Lavado', 'Secado', 'Planchado', 'Lavado en seco'];
 

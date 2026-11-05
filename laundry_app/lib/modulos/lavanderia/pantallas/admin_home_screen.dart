@@ -10,15 +10,15 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../client/data/lavanderia_repository.dart';
-import '../../client/data/pedido_repository.dart';
-import '../../shared/data/soporte_repository.dart';
-import '../../shared/models/lavanderia.dart';
-import '../../shared/models/pedido.dart';
-import '../../shared/models/tema_panel.dart';
-import '../../shared/widgets/orden_card.dart';
-import '../../client/presentation/nube_acciones.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/datos/lavanderia_repository.dart';
+import '../../../core/contrato/datos/pedido_repository.dart';
+import '../../../core/contrato/datos/soporte_repository.dart';
+import '../../../core/contrato/modelos/lavanderia.dart';
+import '../../../core/contrato/modelos/pedido.dart';
+import '../../../core/contrato/modelos/tema_panel.dart';
+import '../../../core/widgets/orden_card.dart';
+import '../../../core/widgets/nube_acciones.dart';
 import 'admin_ciudad_screen.dart';
 import 'panel_en_vivo.dart';
 

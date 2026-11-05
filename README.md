@@ -1,44 +1,22 @@
-# Lavandería — Los Asustadores (EMI)
+# Módulo Gestión de lavanderías — Paulo Ferrufino
 
-Aplicación móvil para la gestión de recepción, seguimiento y entrega de prendas en servicios de lavandería, mediante reconocimiento inteligente de imágenes.
+Sprint 3 de la división de octubre, con el **código nuevo por módulos** (noviembre).
 
-## Ramas
+Incluye: solicitar apertura de la lavandería, configurar datos, horario, precios y
+descuentos, panel del negocio en vivo y la lavandería en 3D.
 
-- `main`: versión estable (solo se actualiza desde `develop`).
-- `develop`: integración. Cada módulo entra aquí con un pull request.
-- `feature/<módulo>`: una rama por módulo/Sprint, creada desde `develop`.
+| Qué | Dónde |
+|---|---|
+| Pantallas del módulo | `laundry_app/lib/modulos/lavanderia/pantallas/` |
+| Rutas del módulo | `laundry_app/lib/modulos/lavanderia/modulo_lavanderia.dart` |
+| Abrir mi lavandería | `laundry_app/lib/modulos/afiliacion/pantallas/abrir_lavanderia_screen.dart` |
+| Datos (Firebase) | `laundry_app/lib/core/contrato/datos/` (apertura y lavandería) |
+| Modelos | `laundry_app/lib/core/contrato/modelos/` (lavandería, solicitud, horario, tema del panel) |
+| Lavandería en 3D | `laundry_app/lib/core/escena_3d/` |
+| Arranque solo de este módulo | `laundry_app/lib/main_octubre_lavanderia.dart` |
 
-| Sprint | Módulo | Rama | Responsable |
-|---|---|---|---|
-| 1 | Autenticación | `feature/autenticacion` | Luis Dorado |
-| 2 | Gestión de pedidos | `feature/pedidos` | Sergio Poma |
-| 3 | Gestión de lavandería | `feature/lavanderia` | Paulo Ferrufino |
-| 4 | Personal y empleo | `feature/personal` | Milen Aliaga |
-| 5 | Finanzas | `feature/finanzas` | Emanuel Velasco |
-| 6 | Reparto | `feature/reparto` | Paulo Ferrufino |
-| 7 | Verificación | `feature/verificacion` | Luis Dorado |
-| 8 | Administración de plataforma | `feature/plataforma` | Emanuel Velasco |
-| 9 | Soporte | `feature/soporte` | Milen Aliaga |
+Correr solo este módulo (desde la app completa):
 
-## Cómo trabajar en tu módulo
-
-```bash
-git clone https://github.com/Sergi122/lavanderia-oficial.git
-cd lavanderia-oficial
-git switch feature/<tu-modulo>
-# ...cambios...
-git add .
-git commit -m "Descripción del cambio"
-git push
 ```
-
-Al terminar, abre un pull request de `feature/<tu-modulo>` hacia `develop`.
-
-Antes de tu primer commit, configura tu nombre y el correo de tu cuenta de GitHub para que los commits aparezcan a tu nombre:
-
-```bash
-git config --global user.name "Tu Nombre"
-git config --global user.email "correo-de-tu-cuenta@github"
+flutter run -d chrome -t lib/main_octubre_lavanderia.dart
 ```
-
-No subir claves (`*adminsdk*.json`, `.env`, keystores) ni APK; ya están en `.gitignore`.

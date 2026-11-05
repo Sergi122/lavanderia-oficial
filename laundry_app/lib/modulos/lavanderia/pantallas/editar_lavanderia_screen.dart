@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../client/data/apertura_lavanderia_repository.dart';
-import '../../client/data/lavanderia_repository.dart';
-import '../../shared/models/horario_atencion.dart';
-import '../../shared/models/lavanderia.dart';
-import '../../shared/models/tema_panel.dart';
-import '../../shared/widgets/icono_prenda.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/datos/apertura_lavanderia_repository.dart';
+import '../../../core/contrato/datos/lavanderia_repository.dart';
+import '../../../core/contrato/modelos/horario_atencion.dart';
+import '../../../core/contrato/modelos/lavanderia.dart';
+import '../../../core/contrato/modelos/tema_panel.dart';
+import '../../../core/widgets/icono_prenda.dart';
 
 const _catalogoServicios = ['Lavado', 'Secado', 'Planchado', 'Lavado en seco'];
 const _nombresDiasCorto = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];

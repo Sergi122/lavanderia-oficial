@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/verificacion/backend_verificacion.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/solicitud_lavanderia.dart';
+import '../../verificacion/backend_verificacion.dart';
+import '../../sesion/auth_repository.dart';
+import '../modelos/solicitud_lavanderia.dart';
 
 /// Cada imagen se guarda en base64 dentro del documento de Firestore (sin
 /// Firebase Storage en el proyecto). Con carnet (2) + selfies (3) + fotos
