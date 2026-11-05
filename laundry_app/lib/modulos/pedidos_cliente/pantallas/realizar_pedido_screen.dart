@@ -7,10 +7,10 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/ubicacion/ubicacion.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/lavanderia.dart';
-import '../data/lavanderia_repository.dart';
-import 'marcar_casa_screen.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/modelos/lavanderia.dart';
+import '../../../core/contrato/datos/lavanderia_repository.dart';
+import '../../../core/routing/rutas_modulos.dart';
 import 'nuevo_pedido_screen.dart';
 
 enum _Origen { actual, casa }
@@ -66,9 +66,7 @@ class _RealizarPedidoScreenState extends ConsumerState<RealizarPedidoScreen> {
   }
 
   Future<void> _marcarCasa() async {
-    final r = await Navigator.of(context).push<PuntoElegido>(
-      MaterialPageRoute(builder: (_) => const MarcarCasaScreen()),
-    );
+    final r = await abrirMarcarCasa(context);
     if (r == null || !mounted) return;
     setState(() {
       _origen = _Origen.casa;

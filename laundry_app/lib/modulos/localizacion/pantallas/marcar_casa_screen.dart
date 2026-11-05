@@ -5,10 +5,9 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/ubicacion/ubicacion.dart';
-import '../../auth/data/auth_repository.dart';
+import '../../../core/sesion/auth_repository.dart';
 
 /// Punto elegido en el mapa, con su dirección legible.
-typedef PuntoElegido = ({LatLng punto, String direccion});
 
 /// Mapa a pantalla completa con un pin fijo al centro: el cliente arrastra el
 /// mapa hasta su casa y toca "Aquí es mi casa". Se guarda en su perfil para

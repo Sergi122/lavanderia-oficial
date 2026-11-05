@@ -4,20 +4,20 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../shared/models/pedido.dart';
-import '../../shared/widgets/dashboard_widgets.dart';
-import '../data/pedido_repository.dart';
+import '../../../core/contrato/modelos/pedido.dart';
+import '../../../core/widgets/dashboard_widgets.dart';
+import '../../../core/contrato/datos/pedido_repository.dart';
 import 'comprobante_screen.dart';
-import 'navegacion_cliente.dart';
+import '../../../core/marcos/navegacion_cliente.dart';
 
 enum _Periodo { tresMeses, esteAnio, todos }
 
 extension on _Periodo {
   String get label => switch (this) {
-        _Periodo.tresMeses => 'Últimos 3 meses',
-        _Periodo.esteAnio => 'Este año',
-        _Periodo.todos => 'Todos',
-      };
+    _Periodo.tresMeses => 'Últimos 3 meses',
+    _Periodo.esteAnio => 'Este año',
+    _Periodo.todos => 'Todos',
+  };
 
   bool incluye(DateTime? f) {
     if (f == null || this == _Periodo.todos) return true;
@@ -39,10 +39,12 @@ class HistorialPedidosScreen extends ConsumerStatefulWidget {
   const HistorialPedidosScreen({super.key});
 
   @override
-  ConsumerState<HistorialPedidosScreen> createState() => _HistorialPedidosScreenState();
+  ConsumerState<HistorialPedidosScreen> createState() =>
+      _HistorialPedidosScreenState();
 }
 
-class _HistorialPedidosScreenState extends ConsumerState<HistorialPedidosScreen> {
+class _HistorialPedidosScreenState
+    extends ConsumerState<HistorialPedidosScreen> {
   _Periodo _periodo = _Periodo.tresMeses;
 
   @override
@@ -54,10 +56,15 @@ class _HistorialPedidosScreenState extends ConsumerState<HistorialPedidosScreen>
       bottomNavigationBar: const NavegacionCliente(actual: 1),
       body: pedidosAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('No se pudieron cargar tus pedidos: $e')),
+        error: (e, _) =>
+            Center(child: Text('No se pudieron cargar tus pedidos: $e')),
         data: (todos) {
-          final pedidos = todos.where((p) => _periodo.incluye(p.creadoEn)).toList()
-            ..sort((a, b) => (b.creadoEn ?? DateTime(0)).compareTo(a.creadoEn ?? DateTime(0)));
+          final pedidos =
+              todos.where((p) => _periodo.incluye(p.creadoEn)).toList()..sort(
+                (a, b) => (b.creadoEn ?? DateTime(0)).compareTo(
+                  a.creadoEn ?? DateTime(0),
+                ),
+              );
           final gastado = pedidos
               .where((p) => p.estado == EstadoPedido.entregado)
               .fold<double>(0, (a, p) => a + p.costoTotal);
@@ -98,7 +105,10 @@ class _HistorialPedidosScreenState extends ConsumerState<HistorialPedidosScreen>
                 Card(
                   margin: const EdgeInsets.only(bottom: 10),
                   child: ListTile(
-                    leading: const Icon(Icons.receipt_long_rounded, color: AppTheme.primary),
+                    leading: const Icon(
+                      Icons.receipt_long_rounded,
+                      color: AppTheme.primary,
+                    ),
                     title: Text('${codigoPedido(p)} · ${p.lavanderiaNombre}'),
                     subtitle: Text(
                       '${p.creadoEn == null ? '—' : fecha.format(p.creadoEn!)} · '
@@ -136,15 +146,25 @@ class _HistorialPedidosScreenState extends ConsumerState<HistorialPedidosScreen>
             Table(
               columnWidths: const {1: IntrinsicColumnWidth()},
               children: [
-                const TableRow(children: [
-                  Text('Prenda', style: TextStyle(fontWeight: FontWeight.w600)),
-                  Text('Cant.', style: TextStyle(fontWeight: FontWeight.w600)),
-                ]),
+                const TableRow(
+                  children: [
+                    Text(
+                      'Prenda',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      'Cant.',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
                 if (p.cantidadRopaRegular > 0)
-                  TableRow(children: [
-                    Text('Ropa regular (por ${p.modoRopaRegular.name})'),
-                    Text(p.cantidadRopaRegular.toStringAsFixed(1)),
-                  ]),
+                  TableRow(
+                    children: [
+                      Text('Ropa regular (por ${p.modoRopaRegular.name})'),
+                      Text(p.cantidadRopaRegular.toStringAsFixed(1)),
+                    ],
+                  ),
                 for (final e in p.prendas.entries)
                   TableRow(children: [Text(e.key), Text('${e.value}')]),
               ],
@@ -164,7 +184,9 @@ class _HistorialPedidosScreenState extends ConsumerState<HistorialPedidosScreen>
                     onPressed: () {
                       Navigator.pop(ctx);
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => ComprobanteScreen(pedido: p)),
+                        MaterialPageRoute(
+                          builder: (_) => ComprobanteScreen(pedido: p),
+                        ),
                       );
                     },
                   ),

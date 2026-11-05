@@ -1,6 +1,6 @@
-import '../models/lavanderia.dart';
-import '../models/pedido.dart';
-import '../models/tipos_prenda.dart';
+import '../modelos/lavanderia.dart';
+import '../modelos/pedido.dart';
+import '../modelos/tipos_prenda.dart';
 
 /// Precio por prenda cuando la lavandería no fijó uno para ese tipo.
 const precioPorDefecto = 5.0;

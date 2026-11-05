@@ -6,16 +6,16 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/routing/rutas.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/lavanderia.dart';
-import '../../shared/models/pedido.dart';
-import '../../shared/models/tipos_prenda.dart';
-import '../../shared/widgets/icono_prenda.dart';
-import '../../shared/ia/clasificador_prendas.dart';
-import '../../shared/presentation/registrar_prendas_screen.dart';
-import '../../shared/data/intencion_pedido_repository.dart';
-import '../../shared/data/precio_pedido.dart';
-import '../data/pedido_repository.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/modelos/lavanderia.dart';
+import '../../../core/contrato/modelos/pedido.dart';
+import '../../../core/contrato/modelos/tipos_prenda.dart';
+import '../../../core/widgets/icono_prenda.dart';
+import '../../../core/ia/clasificador_prendas.dart';
+import '../../../core/routing/rutas_modulos.dart';
+import '../../../core/contrato/datos/intencion_pedido_repository.dart';
+import '../../../core/contrato/datos/precio_pedido.dart';
+import '../../../core/contrato/datos/pedido_repository.dart';
 
 /// Más allá de esta distancia al local no se ofrece recojo a domicilio.
 const maxKmRecojo = 30.0;
@@ -399,10 +399,9 @@ class _NuevoPedidoScreenState extends ConsumerState<NuevoPedidoScreen> {
   /// La IA cuenta las prendas a partir de fotos; el cliente puede corregir
   /// el conteo después con los contadores de siempre.
   Future<void> _identificarConFoto() async {
-    final r = await Navigator.of(context).push<Map<String, int>>(
-      MaterialPageRoute(
-        builder: (_) => RegistrarPrendasScreen(lavanderia: widget.lavanderia),
-      ),
+    final r = await abrirRegistrarPrendas<Map<String, int>>(
+      context,
+      lavanderia: widget.lavanderia,
     );
     if (r == null || !mounted) return;
     final fuera = <String>[];

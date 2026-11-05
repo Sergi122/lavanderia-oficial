@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/pedido.dart';
+import '../../sesion/auth_repository.dart';
+import '../modelos/pedido.dart';
 
 final misPedidosProvider = StreamProvider<List<Pedido>>((ref) {
   final firestore = ref.watch(firestoreProvider);

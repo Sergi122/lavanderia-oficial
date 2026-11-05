@@ -4,14 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/app_user.dart';
-import '../../shared/models/pedido.dart';
-import '../../shared/widgets/dashboard_widgets.dart';
-import '../data/pedido_repository.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/modelos/app_user.dart';
+import '../../../core/contrato/modelos/pedido.dart';
+import '../../../core/widgets/dashboard_widgets.dart';
+import '../../../core/contrato/datos/pedido_repository.dart';
 import 'mapa_lavanderias_screen.dart';
-import 'navegacion_cliente.dart';
-import 'seguimiento_pedido_screen.dart';
+import '../../../core/marcos/navegacion_cliente.dart';
+import '../../../core/routing/rutas_modulos.dart';
 
 class ClientHomeScreen extends ConsumerWidget {
   const ClientHomeScreen({super.key});
@@ -36,7 +36,9 @@ class ClientHomeScreen extends ConsumerWidget {
     final perfilCompleto = appUser?.perfilCompleto ?? true;
 
     return Scaffold(
-      bottomNavigationBar: esCliente ? const NavegacionCliente(actual: 0) : null,
+      bottomNavigationBar: esCliente
+          ? const NavegacionCliente(actual: 0)
+          : null,
       body: Column(
         children: [
           PanelHeader(
@@ -49,7 +51,10 @@ class ClientHomeScreen extends ConsumerWidget {
             extras: [
               IconButton(
                 onPressed: () => context.push('/cliente/notificaciones'),
-                icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
+                icon: const Icon(
+                  Icons.notifications_none_rounded,
+                  color: Colors.white,
+                ),
                 tooltip: 'Notificaciones',
               ),
               if (panelPropio != null)
@@ -483,13 +488,7 @@ class _PedidoCard extends ConsumerWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: OutlinedButton.icon(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          SeguimientoPedidoScreen(pedidoId: pedido.id),
-                    ),
-                  ),
+                  onPressed: () => abrirSeguimientoPedido(context, pedido.id),
                   icon: const Icon(Icons.my_location, size: 18),
                   label: Text(
                     pedido.necesitaRepartidor && pedido.repartidorUid == null
@@ -506,13 +505,7 @@ class _PedidoCard extends ConsumerWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton.icon(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          SeguimientoPedidoScreen(pedidoId: pedido.id),
-                    ),
-                  ),
+                  onPressed: () => abrirSeguimientoPedido(context, pedido.id),
                   icon: const Icon(Icons.photo_outlined, size: 18),
                   label: const Text('Ver comprobante de entrega'),
                 ),

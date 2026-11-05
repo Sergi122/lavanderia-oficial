@@ -8,9 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/lavanderia.dart';
-import '../data/lavanderia_repository.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/modelos/lavanderia.dart';
+import '../../../core/contrato/datos/lavanderia_repository.dart';
 
 const _centroLaPaz = LatLng(-16.5000, -68.1500);
 const _distancia = Distance();

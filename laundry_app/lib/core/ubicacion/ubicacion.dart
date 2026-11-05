@@ -4,6 +4,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
+/// Punto que elige el cliente en el mapa (Localización) y que usa el pedido.
+typedef PuntoElegido = ({LatLng punto, String direccion});
+
 const centroLaPaz = LatLng(-16.5000, -68.1500);
 const _distancia = Distance();
 

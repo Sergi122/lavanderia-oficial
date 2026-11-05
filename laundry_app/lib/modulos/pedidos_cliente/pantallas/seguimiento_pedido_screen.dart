@@ -8,9 +8,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../shared/models/pedido.dart';
-import '../data/lavanderia_repository.dart';
-import '../data/pedido_repository.dart';
+import '../../../core/contrato/modelos/pedido.dart';
+import '../../../core/contrato/datos/lavanderia_repository.dart';
+import '../../../core/contrato/datos/pedido_repository.dart';
 
 /// Seguimiento en vivo: dónde va el repartidor, en qué paso está y, al final,
 /// la foto de comprobante de la entrega.
