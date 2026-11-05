@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,9 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../legal/legal_screens.dart';
-import '../../legal/textos_legales.dart';
-import '../data/auth_repository.dart';
+import '../../../core/widgets/fondo_agua.dart';
+
+import '../../../core/legal/legal_screens.dart';
+import '../../../core/legal/textos_legales.dart';
+import '../../../core/sesion/auth_repository.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -557,146 +558,4 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
     );
   }
-}
-
-/// Botón principal estilo vidrio claro (igual que en la landing).
-class BotonVidrio extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final Widget child;
-  const BotonVidrio({required this.onPressed, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Opacity(
-      opacity: onPressed == null ? 0.7 : 1,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(999),
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.white, Color(0xFFCFEAFF), Color(0xFF8FD7FF)],
-            stops: [0, 0.5, 1],
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF3D8EEB).withValues(alpha: 0.6),
-              blurRadius: 26,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(999),
-            onTap: onPressed,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: DefaultTextStyle.merge(
-                style: const TextStyle(
-                  color: Color(0xFF06213F),
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                ),
-                child: Center(child: child),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Fondo azul agua con degradado y burbujas que suben lentamente.
-class FondoAgua extends StatefulWidget {
-  const FondoAgua();
-
-  @override
-  State<FondoAgua> createState() => _FondoAguaState();
-}
-
-class _FondoAguaState extends State<FondoAgua>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _ctrl = AnimationController(
-    vsync: this,
-    duration: const Duration(seconds: 40),
-  )..repeat();
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        gradient: RadialGradient(
-          center: Alignment(0, -1.2),
-          radius: 1.5,
-          colors: [Color(0xFF1F5794), Color(0xFF0D2A4A), Color(0xFF071829)],
-          stops: [0, 0.55, 1],
-        ),
-      ),
-      child: RepaintBoundary(
-        child: AnimatedBuilder(
-          animation: _ctrl,
-          builder: (_, _) => CustomPaint(painter: _PintorBurbujas(_ctrl.value)),
-        ),
-      ),
-    );
-  }
-}
-
-class _PintorBurbujas extends CustomPainter {
-  final double t;
-  _PintorBurbujas(this.t);
-
-  // (x 0..1, radio, velocidad, fase)
-  static const _b = [
-    (0.06, 22.0, 1.0, 0.00),
-    (0.17, 9.0, 2.0, 0.35),
-    (0.29, 34.0, 1.0, 0.60),
-    (0.44, 12.0, 2.0, 0.15),
-    (0.58, 26.0, 1.0, 0.80),
-    (0.71, 10.0, 2.0, 0.50),
-    (0.83, 40.0, 1.0, 0.25),
-    (0.93, 17.0, 2.0, 0.70),
-  ];
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    for (final b in _b) {
-      final prog = ((t * b.$3) + b.$4) % 1.0;
-      final y = size.height + b.$2 - prog * (size.height + b.$2 * 2);
-      final x =
-          b.$1 * size.width + math.sin(prog * math.pi * 2 + b.$4 * 6) * 18;
-      final c = Offset(x, y);
-      final r = b.$2;
-      final paint = Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.4, -0.45),
-          colors: [
-            Colors.white.withValues(alpha: 0.7),
-            const Color(0xFF8FD7FF).withValues(alpha: 0.16),
-            const Color(0xFF8FD7FF).withValues(alpha: 0.04),
-          ],
-          stops: const [0, 0.4, 1],
-        ).createShader(Rect.fromCircle(center: c, radius: r));
-      canvas.drawCircle(c, r, paint);
-      canvas.drawCircle(
-        c,
-        r,
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..color = Colors.white.withValues(alpha: 0.25),
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(_PintorBurbujas old) => old.t != t;
 }

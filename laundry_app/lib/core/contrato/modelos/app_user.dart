@@ -37,6 +37,12 @@ class AppUser {
   final String actividad;
   final DateTime? actividadEn;
 
+  /// Repartidor: si está recibiendo encargos nuevos (switch de su panel).
+  final bool disponibleEncargos;
+
+  /// Por qué el superadmin suspendió la cuenta ('' si está activa).
+  final String motivoSuspension;
+
   const AppUser({
     required this.uid,
     required this.nombre,
@@ -59,6 +65,8 @@ class AppUser {
     this.terminosVersion = '',
     this.actividad = 'descanso',
     this.actividadEn,
+    this.disponibleEncargos = true,
+    this.motivoSuspension = '',
   });
 
   /// Un cliente nuevo debe completar nombres, apellidos y el punto donde se
@@ -107,6 +115,8 @@ class AppUser {
       actividadEn: map['actividadEn'] is Timestamp
           ? (map['actividadEn'] as Timestamp).toDate()
           : null,
+      disponibleEncargos: map['disponibleEncargos'] as bool? ?? true,
+      motivoSuspension: map['motivoSuspension'] as String? ?? '',
     );
   }
 

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/auth_repository.dart';
+import '../../../core/sesion/auth_repository.dart';
 
 class CuentaSuspendidaScreen extends ConsumerWidget {
   const CuentaSuspendidaScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final motivo =
+        ref.watch(currentAppUserProvider).valueOrNull?.motivoSuspension ?? '';
     return Scaffold(
       body: Center(
         child: Padding(
@@ -22,6 +24,14 @@ class CuentaSuspendidaScreen extends ConsumerWidget {
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                 textAlign: TextAlign.center,
               ),
+              if (motivo.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'Motivo: $motivo',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ],
               const SizedBox(height: 8),
               const Text(
                 'Si crees que esto es un error, contacta al soporte de la lavandería.',

@@ -6,8 +6,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/widgets/abanico_cartas.dart';
-import '../data/auth_repository.dart';
-import '../data/codigo_correo_api.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../datos/codigo_correo_api.dart';
 
 const _largo = 6;
 

@@ -1,44 +1,25 @@
-# Lavandería — Los Asustadores (EMI)
+# Módulo Gestión de cuentas y acceso — Luis Dorado
 
-Aplicación móvil para la gestión de recepción, seguimiento y entrega de prendas en servicios de lavandería, mediante reconocimiento inteligente de imágenes.
+Sprint 1 de la división de octubre, con el **código nuevo por módulos** (noviembre).
 
-## Ramas
+Incluye: crear cuenta, verificar el correo con código, iniciar y cerrar sesión,
+redirección según el rol, recuperar contraseña, cuenta suspendida, completar y
+editar perfil, y la página pública de bienvenida (desde donde se entra al login).
 
-- `main`: versión estable (solo se actualiza desde `develop`).
-- `develop`: integración. Cada módulo entra aquí con un pull request.
-- `feature/<módulo>`: una rama por módulo/Sprint, creada desde `develop`.
+| Qué | Dónde |
+|---|---|
+| Pantallas del módulo | `laundry_app/lib/modulos/cuentas/pantallas/` |
+| Código por correo | `laundry_app/lib/modulos/cuentas/datos/codigo_correo_api.dart` |
+| Rutas del módulo | `laundry_app/lib/modulos/cuentas/modulo_cuentas.dart` |
+| Sesión (Firebase Auth) | `laundry_app/lib/core/sesion/auth_repository.dart` |
+| Usuario y roles | `laundry_app/lib/core/contrato/modelos/app_user.dart` |
+| Redirección por rol | `laundry_app/lib/core/router/app_router.dart` |
+| Arranque por módulos | `laundry_app/lib/arranque.dart`, `laundry_app/lib/core/arranque/` |
+| Página pública | `laundry_app/lib/modulos/localizacion/pantallas/landing_screen*.dart`, `landing/public/index.html` |
+| Arranque solo de este módulo | `laundry_app/lib/main_octubre_cuentas.dart` |
 
-| Sprint | Módulo | Rama | Responsable |
-|---|---|---|---|
-| 1 | Autenticación | `feature/autenticacion` | Luis Dorado |
-| 2 | Gestión de pedidos | `feature/pedidos` | Sergio Poma |
-| 3 | Gestión de lavandería | `feature/lavanderia` | Paulo Ferrufino |
-| 4 | Personal y empleo | `feature/personal` | Milen Aliaga |
-| 5 | Finanzas | `feature/finanzas` | Emanuel Velasco |
-| 6 | Reparto | `feature/reparto` | Paulo Ferrufino |
-| 7 | Verificación | `feature/verificacion` | Luis Dorado |
-| 8 | Administración de plataforma | `feature/plataforma` | Emanuel Velasco |
-| 9 | Soporte | `feature/soporte` | Milen Aliaga |
+Correr solo este módulo (desde la app completa):
 
-## Cómo trabajar en tu módulo
-
-```bash
-git clone https://github.com/Sergi122/lavanderia-oficial.git
-cd lavanderia-oficial
-git switch feature/<tu-modulo>
-# ...cambios...
-git add .
-git commit -m "Descripción del cambio"
-git push
 ```
-
-Al terminar, abre un pull request de `feature/<tu-modulo>` hacia `develop`.
-
-Antes de tu primer commit, configura tu nombre y el correo de tu cuenta de GitHub para que los commits aparezcan a tu nombre:
-
-```bash
-git config --global user.name "Tu Nombre"
-git config --global user.email "correo-de-tu-cuenta@github"
+flutter run -d chrome --web-port 8080 -t lib/main_octubre_cuentas.dart
 ```
-
-No subir claves (`*adminsdk*.json`, `.env`, keystores) ni APK; ya están en `.gitignore`.
