@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../core/widgets/flotante.dart';
 
 import 'dart:math' as math;
@@ -640,7 +642,14 @@ class Movimiento {
   final String detalle;
   final double monto; // + ingreso, − egreso
   final DateTime? fecha;
-  const Movimiento(this.titulo, this.detalle, this.monto, this.fecha);
+  final String adjuntoBase64;
+  const Movimiento(
+    this.titulo,
+    this.detalle,
+    this.monto,
+    this.fecha, {
+    this.adjuntoBase64 = '',
+  });
 }
 
 class ListaMovimientos extends StatelessWidget {
@@ -705,6 +714,21 @@ class ListaMovimientos extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (items[i].adjuntoBase64.isNotEmpty)
+                  IconButton(
+                    tooltip: 'Ver factura',
+                    icon: const Icon(Icons.receipt_long_outlined, size: 20),
+                    onPressed: () => showDialog<void>(
+                      context: context,
+                      builder: (c) => Dialog(
+                        child: InteractiveViewer(
+                          child: Image.memory(
+                            base64Decode(items[i].adjuntoBase64),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 Text(
                   bs(items[i].monto, signo: true),
                   style: TextStyle(

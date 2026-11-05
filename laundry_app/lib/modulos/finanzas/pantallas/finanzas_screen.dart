@@ -1,19 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../client/data/lavanderia_repository.dart';
-import '../../client/data/pedido_repository.dart';
-import '../../shared/models/app_user.dart';
-import '../../shared/models/lavanderia.dart';
-import '../../shared/models/pedido.dart';
-import '../data/admin_empleados_repository.dart';
-import '../data/finanzas_repository.dart';
-import 'finanzas_widgets.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/datos/lavanderia_repository.dart';
+import '../../../core/contrato/datos/pedido_repository.dart';
+import '../../../core/contrato/modelos/app_user.dart';
+import '../../../core/contrato/modelos/lavanderia.dart';
+import '../../../core/contrato/modelos/pedido.dart';
+import '../../../core/contrato/datos/admin_empleados_repository.dart';
+import '../datos/finanzas_repository.dart';
+import '../widgets/finanzas_widgets.dart';
 
 /// Categorías típicas de una lavandería, para que registrar un gasto sea
 /// casi un solo toque en vez de escribir la descripción cada vez.
@@ -105,46 +108,114 @@ class _FinanzasScreenState extends ConsumerState<FinanzasScreen> {
   ]) async {
     final descripcionCtrl = TextEditingController(text: categoriaInicial);
     final montoCtrl = TextEditingController();
+    var fecha = DateTime.now();
+    String factura = '';
     final confirmado = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Agregar gasto'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: descripcionCtrl,
-              decoration: const InputDecoration(labelText: 'Descripción'),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialog) => AlertDialog(
+          title: const Text('Registrar egreso'),
+          content: SizedBox(
+            width: 420,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: descripcionCtrl,
+                  decoration: const InputDecoration(labelText: 'Descripción'),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: montoCtrl,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        autofocus: categoriaInicial.isNotEmpty,
+                        decoration: const InputDecoration(
+                          labelText: 'Monto (Bs)',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () async {
+                          final elegido = await showDatePicker(
+                            context: context,
+                            initialDate: fecha,
+                            firstDate: DateTime(DateTime.now().year - 1),
+                            lastDate: DateTime.now(),
+                          );
+                          if (elegido != null) setDialog(() => fecha = elegido);
+                        },
+                        icon: const Icon(Icons.calendar_today, size: 16),
+                        label: Text(_fmtFecha(fecha)),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () async {
+                    final foto = await ImagePicker().pickImage(
+                      source: ImageSource.gallery,
+                      maxWidth: 1000,
+                      imageQuality: 60,
+                    );
+                    if (foto == null) return;
+                    final bytes = await foto.readAsBytes();
+                    setDialog(() => factura = base64Encode(bytes));
+                  },
+                  icon: Icon(
+                    factura.isEmpty ? Icons.upload_file : Icons.check_circle,
+                    size: 18,
+                  ),
+                  label: Text(
+                    factura.isEmpty
+                        ? 'Adjuntar factura (opcional)'
+                        : 'Factura adjunta · cambiar',
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: montoCtrl,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-              ),
-              autofocus: categoriaInicial.isNotEmpty,
-              decoration: const InputDecoration(labelText: 'Monto (Bs)'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancelar'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Guardar egreso'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancelar'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Guardar'),
-          ),
-        ],
       ),
     );
     if (confirmado != true) return;
-    final monto = double.tryParse(montoCtrl.text.trim()) ?? 0;
+    final monto =
+        double.tryParse(montoCtrl.text.trim().replaceAll(',', '.')) ?? 0;
     if (descripcionCtrl.text.trim().isEmpty || monto <= 0) return;
+    final hoy = DateTime.now();
+    final esHoy =
+        fecha.year == hoy.year &&
+        fecha.month == hoy.month &&
+        fecha.day == hoy.day;
     await ref
         .read(finanzasRepositoryProvider)
-        .agregarEgreso(lavanderiaId, descripcionCtrl.text.trim(), monto);
+        .agregarEgreso(
+          lavanderiaId,
+          descripcionCtrl.text.trim(),
+          monto,
+          // Un día pasado se guarda a mediodía para que no cambie de día por zona horaria.
+          fecha: esHoy
+              ? null
+              : DateTime(fecha.year, fecha.month, fecha.day, 12),
+          facturaBase64: factura,
+        );
   }
 
   Future<void> _generarInforme({
@@ -155,6 +226,62 @@ class _FinanzasScreenState extends ConsumerState<FinanzasScreen> {
     required List<AppUser> equipo,
     required int diasEnRango,
   }) async {
+    // Qué incluir y qué hacer con el PDF (WF-14b).
+    var categorias = true, detalle = true, planilla = true;
+    final accion = await showDialog<String>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialog) => AlertDialog(
+          title: const Text('Informe en PDF'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(Icons.check_box, color: AppTheme.primary),
+                title: Text('Resumen de ingresos y egresos'),
+                subtitle: Text('Siempre va incluido'),
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: categorias,
+                onChanged: (v) => setDialog(() => categorias = v ?? false),
+                title: const Text('Gastos por categoría'),
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: detalle,
+                onChanged: (v) => setDialog(() => detalle = v ?? false),
+                title: const Text('Detalle de gastos día por día'),
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: planilla,
+                onChanged: (v) => setDialog(() => planilla = v ?? false),
+                title: const Text('Planilla de empleados'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancelar'),
+            ),
+            OutlinedButton.icon(
+              onPressed: () => Navigator.of(context).pop('compartir'),
+              icon: const Icon(Icons.share_outlined, size: 18),
+              label: const Text('Compartir / enviar'),
+            ),
+            FilledButton.icon(
+              onPressed: () => Navigator.of(context).pop('ver'),
+              icon: const Icon(Icons.download, size: 18),
+              label: const Text('Descargar PDF'),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (accion == null) return;
     setState(() => _generandoInforme = true);
     try {
       final doc = pw.Document();
@@ -219,107 +346,131 @@ class _FinanzasScreenState extends ConsumerState<FinanzasScreen> {
                 ),
               ],
             ),
-            pw.SizedBox(height: 24),
-            pw.Text(
-              'Resumen de gastos por categoría',
-              style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold),
-            ),
-            pw.SizedBox(height: 6),
-            if (egresosDelRango.isEmpty)
+            if (categorias) ...[
+              pw.SizedBox(height: 24),
               pw.Text(
-                'Sin gastos manuales en este periodo.',
-                style: const pw.TextStyle(
-                  color: PdfColors.grey700,
-                  fontSize: 10,
+                'Resumen de gastos por categoría',
+                style: pw.TextStyle(
+                  fontSize: 13,
+                  fontWeight: pw.FontWeight.bold,
                 ),
-              )
-            else
-              pw.Table(
-                border: pw.TableBorder.all(color: PdfColors.grey400),
-                columnWidths: const {
-                  0: pw.FlexColumnWidth(3),
-                  1: pw.FlexColumnWidth(2),
-                },
-                children: [
-                  _filaTabla(['Categoría', 'Total (Bs)'], esEncabezado: true),
-                  for (final entry in _agruparPorCategoria(
-                    egresosDelRango,
-                  ).entries)
-                    _filaTabla([entry.key, entry.value.toStringAsFixed(0)]),
-                ],
               ),
-            pw.SizedBox(height: 24),
-            pw.Text(
-              'Detalle de gastos (día por día)',
-              style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold),
-            ),
-            pw.SizedBox(height: 6),
-            if (egresosDelRango.isEmpty)
-              pw.SizedBox()
-            else
-              pw.Table(
-                border: pw.TableBorder.all(color: PdfColors.grey400),
-                columnWidths: const {
-                  0: pw.FlexColumnWidth(2),
-                  1: pw.FlexColumnWidth(3),
-                  2: pw.FlexColumnWidth(2),
-                },
-                children: [
-                  _filaTabla([
-                    'Fecha',
-                    'Descripción',
-                    'Monto (Bs)',
-                  ], esEncabezado: true),
-                  for (final e in egresosDelRango)
-                    _filaTabla([
-                      e.fecha == null ? '-' : _fmtFecha(e.fecha!),
-                      e.descripcion,
-                      e.monto.toStringAsFixed(0),
-                    ]),
-                ],
-              ),
-            pw.SizedBox(height: 24),
-            pw.Text(
-              'Planilla (prorrateada a $diasEnRango día(s) del periodo)',
-              style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold),
-            ),
-            pw.SizedBox(height: 6),
-            if (equipo.isEmpty)
+              pw.SizedBox(height: 6),
+              if (egresosDelRango.isEmpty)
+                pw.Text(
+                  'Sin gastos manuales en este periodo.',
+                  style: const pw.TextStyle(
+                    color: PdfColors.grey700,
+                    fontSize: 10,
+                  ),
+                )
+              else
+                pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.grey400),
+                  columnWidths: const {
+                    0: pw.FlexColumnWidth(3),
+                    1: pw.FlexColumnWidth(2),
+                  },
+                  children: [
+                    _filaTabla(['Categoría', 'Total (Bs)'], esEncabezado: true),
+                    for (final entry in _agruparPorCategoria(
+                      egresosDelRango,
+                    ).entries)
+                      _filaTabla([entry.key, entry.value.toStringAsFixed(0)]),
+                  ],
+                ),
+            ],
+            if (detalle) ...[
+              pw.SizedBox(height: 24),
               pw.Text(
-                'Sin empleados registrados.',
-                style: const pw.TextStyle(
-                  color: PdfColors.grey700,
-                  fontSize: 10,
+                'Detalle de gastos (día por día)',
+                style: pw.TextStyle(
+                  fontSize: 13,
+                  fontWeight: pw.FontWeight.bold,
                 ),
-              )
-            else
-              pw.Table(
-                border: pw.TableBorder.all(color: PdfColors.grey400),
-                columnWidths: const {
-                  0: pw.FlexColumnWidth(3),
-                  1: pw.FlexColumnWidth(2),
-                  2: pw.FlexColumnWidth(2),
-                },
-                children: [
-                  _filaTabla([
-                    'Empleado',
-                    'Salario mensual (Bs)',
-                    'Prorrateado (Bs)',
-                  ], esEncabezado: true),
-                  for (final e in equipo)
-                    _filaTabla([
-                      e.nombre,
-                      (e.salarioEmpleado ?? 0).toStringAsFixed(0),
-                      ((e.salarioEmpleado ?? 0) * diasEnRango / 30)
-                          .toStringAsFixed(0),
-                    ]),
-                ],
               ),
+              pw.SizedBox(height: 6),
+              if (egresosDelRango.isEmpty)
+                pw.SizedBox()
+              else
+                pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.grey400),
+                  columnWidths: const {
+                    0: pw.FlexColumnWidth(2),
+                    1: pw.FlexColumnWidth(3),
+                    2: pw.FlexColumnWidth(2),
+                  },
+                  children: [
+                    _filaTabla([
+                      'Fecha',
+                      'Descripción',
+                      'Monto (Bs)',
+                    ], esEncabezado: true),
+                    for (final e in egresosDelRango)
+                      _filaTabla([
+                        e.fecha == null ? '-' : _fmtFecha(e.fecha!),
+                        e.descripcion,
+                        e.monto.toStringAsFixed(0),
+                      ]),
+                  ],
+                ),
+            ],
+            if (planilla) ...[
+              pw.SizedBox(height: 24),
+              pw.Text(
+                'Planilla (prorrateada a $diasEnRango día(s) del periodo)',
+                style: pw.TextStyle(
+                  fontSize: 13,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 6),
+              if (equipo.isEmpty)
+                pw.Text(
+                  'Sin empleados registrados.',
+                  style: const pw.TextStyle(
+                    color: PdfColors.grey700,
+                    fontSize: 10,
+                  ),
+                )
+              else
+                pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.grey400),
+                  columnWidths: const {
+                    0: pw.FlexColumnWidth(3),
+                    1: pw.FlexColumnWidth(2),
+                    2: pw.FlexColumnWidth(2),
+                  },
+                  children: [
+                    _filaTabla([
+                      'Empleado',
+                      'Salario mensual (Bs)',
+                      'Prorrateado (Bs)',
+                    ], esEncabezado: true),
+                    for (final e in equipo)
+                      _filaTabla([
+                        e.nombre,
+                        (e.salarioEmpleado ?? 0).toStringAsFixed(0),
+                        ((e.salarioEmpleado ?? 0) * diasEnRango / 30)
+                            .toStringAsFixed(0),
+                      ]),
+                  ],
+                ),
+            ],
           ],
         ),
       );
 
-      await Printing.layoutPdf(onLayout: (format) async => doc.save());
+      final bytes = await doc.save();
+      final nombre =
+          'informe_${lavanderia.nombre.replaceAll(' ', '_')}_${ahora.year}-${ahora.month.toString().padLeft(2, '0')}.pdf';
+      if (accion == 'compartir') {
+        // En el celular abre el menú de compartir (Gmail, WhatsApp...);
+        // en la web descarga el archivo para adjuntarlo al correo.
+        await Printing.sharePdf(bytes: bytes, filename: nombre);
+      } else {
+        await Printing.layoutPdf(onLayout: (_) async => bytes, name: nombre);
+      }
     } finally {
       if (mounted) setState(() => _generandoInforme = false);
     }
@@ -705,7 +856,13 @@ class _FinanzasScreenState extends ConsumerState<FinanzasScreen> {
                           p.creadoEn,
                         ),
                       for (final e in egresosDelRango)
-                        Movimiento(e.descripcion, 'Gasto', -e.monto, e.fecha),
+                        Movimiento(
+                          e.descripcion,
+                          'Gasto',
+                          -e.monto,
+                          e.fecha,
+                          adjuntoBase64: e.facturaBase64,
+                        ),
                     ]..sort(
                       (x, y) => (y.fecha ?? DateTime(2000)).compareTo(
                         x.fecha ?? DateTime(2000),
