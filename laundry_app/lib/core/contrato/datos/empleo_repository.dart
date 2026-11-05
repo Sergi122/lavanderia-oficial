@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/verificacion/backend_verificacion.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/solicitud_empleado.dart';
+import '../../verificacion/backend_verificacion.dart';
+import '../../sesion/auth_repository.dart';
+import '../modelos/solicitud_empleado.dart';
 
 /// Tamaño máximo del CV: Firestore limita cada documento a 1MB y el
 /// base64 infla el tamaño ~33%. Con carnet (2) + selfies (3) + CV en el

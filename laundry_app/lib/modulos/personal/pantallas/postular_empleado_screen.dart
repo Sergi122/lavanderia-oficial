@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/verificacion/paso_identidad.dart';
-import '../data/empleo_repository.dart';
-import '../data/lavanderia_repository.dart';
+import '../../../core/contrato/datos/empleo_repository.dart';
+import '../../../core/contrato/datos/lavanderia_repository.dart';
 
 String _formatoKb(int bytes) => '${(bytes / 1024).round()} KB';
 

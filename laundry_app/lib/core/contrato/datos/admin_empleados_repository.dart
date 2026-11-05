@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/app_user.dart';
-import '../../shared/models/convocatoria.dart';
-import '../../shared/models/solicitud_empleado.dart';
+import '../../sesion/auth_repository.dart';
+import '../modelos/app_user.dart';
+import '../modelos/convocatoria.dart';
+import '../modelos/solicitud_empleado.dart';
 
 // Solicitudes pendientes de un empleado para ESTA lavandería en particular
 // (el admin solo ve/aprueba a sus propios postulantes, no los de otras).

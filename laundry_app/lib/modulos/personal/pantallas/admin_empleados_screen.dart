@@ -9,12 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../shared/models/app_user.dart';
-import '../../shared/models/convocatoria.dart';
-import '../../shared/models/solicitud_empleado.dart';
-import '../../shared/widgets/solicitud_widgets.dart';
-import '../data/admin_empleados_repository.dart';
+import '../../../core/sesion/auth_repository.dart';
+import '../../../core/contrato/modelos/app_user.dart';
+import '../../../core/contrato/modelos/convocatoria.dart';
+import '../../../core/contrato/modelos/solicitud_empleado.dart';
+import '../../../core/widgets/solicitud_widgets.dart';
+import '../../../core/widgets/perfil_empleado_hoja.dart';
+import '../../../core/contrato/datos/admin_empleados_repository.dart';
 
 class AdminEmpleadosScreen extends ConsumerWidget {
   const AdminEmpleadosScreen({super.key});
@@ -280,10 +281,19 @@ class _SolicitudEmpleadoCard extends ConsumerWidget {
                     color: Colors.black54,
                   ),
                   const SizedBox(width: 6),
-                  Text(
-                    'CV: ${solicitud.cvNombre}',
-                    style: const TextStyle(color: Colors.black54),
+                  Expanded(
+                    child: Text(
+                      'CV: ${solicitud.cvNombre}',
+                      style: const TextStyle(color: Colors.black54),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
+                  if (solicitud.cvBase64.isNotEmpty)
+                    TextButton(
+                      onPressed: () =>
+                          abrirCv(solicitud.cvNombre, solicitud.cvBase64),
+                      child: const Text('Ver CV'),
+                    ),
                 ],
               ),
             const SizedBox(height: 14),
@@ -430,17 +440,25 @@ class _TabDisponibles extends ConsumerWidget {
                         Text(e.bioEmpleado),
                       ],
                       const SizedBox(height: 12),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.primary,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: () => verPerfilEmpleado(context, e),
+                            icon: const Icon(Icons.person_outline, size: 18),
+                            label: const Text('Ver perfil'),
                           ),
-                          onPressed: () => ref
-                              .read(adminEmpleadosRepositoryProvider)
-                              .contratarDisponible(e.uid, lavanderiaId),
-                          child: const Text('Contratar'),
-                        ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.primary,
+                            ),
+                            onPressed: () => ref
+                                .read(adminEmpleadosRepositoryProvider)
+                                .contratarDisponible(e.uid, lavanderiaId),
+                            child: const Text('Contratar'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -849,7 +867,7 @@ class _TarjetaEmpleado extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          _Dato(
+          DatoPerfil(
             icono: Icons.payments_outlined,
             texto: e.salarioEmpleado == null
                 ? 'Sin salario definido'
@@ -857,14 +875,22 @@ class _TarjetaEmpleado extends StatelessWidget {
             destacado: e.salarioEmpleado != null,
           ),
           if (e.telefono.isNotEmpty)
-            _Dato(icono: Icons.phone_outlined, texto: e.telefono),
+            DatoPerfil(icono: Icons.phone_outlined, texto: e.telefono),
           if (e.email.isNotEmpty)
-            _Dato(icono: Icons.mail_outline, texto: e.email),
+            DatoPerfil(icono: Icons.mail_outline, texto: e.email),
           if (e.direccion.isNotEmpty)
-            _Dato(icono: Icons.home_outlined, texto: e.direccion),
+            DatoPerfil(icono: Icons.home_outlined, texto: e.direccion),
           const SizedBox(height: 10),
           Row(
             children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () => verPerfilEmpleado(context, e),
+                  icon: const Icon(Icons.person_outline, size: 18),
+                  label: const Text('Ver perfil'),
+                ),
+              ),
+              const SizedBox(width: 10),
               if (e.telefono.isNotEmpty)
                 Expanded(
                   child: OutlinedButton.icon(
@@ -887,38 +913,4 @@ class _TarjetaEmpleado extends StatelessWidget {
       ),
     );
   }
-}
-
-class _Dato extends StatelessWidget {
-  final IconData icono;
-  final String texto;
-  final bool destacado;
-  const _Dato({
-    required this.icono,
-    required this.texto,
-    this.destacado = false,
-  });
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: 6),
-    child: Row(
-      children: [
-        Icon(icono, size: 17, color: AppTheme.primary),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            texto,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 13.5,
-              fontWeight: destacado ? FontWeight.w800 : FontWeight.w500,
-              color: destacado ? AppTheme.tinta : Colors.black87,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
 }
